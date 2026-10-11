@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>車検案内の自動送信 | βモニター募集（先着10工場・3ヶ月無料）</title>
+<meta name="description" content="個人経営の自動車整備工場向け。車検満了の2ヶ月前・1ヶ月前に、お客様へSMSで案内を自動送信。案内漏れによる他店への流出を防ぎます。βモニター先着10工場、3ヶ月無料。">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f5f6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121417" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="車検案内の自動送信 | βモニター募集">
+<meta property="og:description" content="車検満了の2ヶ月前・1ヶ月前に、お客様へSMSで自動案内。先着10工場、3ヶ月無料のモニター募集中です。">
+<meta property="og:url" content="https://yuukioda999.github.io/shaken-annai/">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "車検案内の自動送信（仮称）",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "description": "自動車整備工場向けに、車検満了の2ヶ月前・1ヶ月前にSMSやメールで案内を自動送信するサービス。",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY", "description": "βモニター期間3ヶ月無料（先着10工場）" },
+  "author": { "@type": "Person", "name": "小田裕貴" }
+}
+</script>
+<style>
+:root{
+  --bg:#f4f5f6;
+  --surface:#ffffff;
+  --surface-2:#e9ecef;
+  --ink:#16191d;
+  --ink-2:#4a525c;
+  --line:#d3d8de;
+  --accent:#b8400f;
+  --accent-ink:#ffffff;
+  --accent-soft:#fbe9df;
+  --ok:#1f6f43;
+  --ok-soft:#e0f1e7;
+  --warn:#8a5a00;
+  --warn-soft:#fbf0d6;
+  --shadow:0 1px 2px rgba(22,25,29,.06),0 8px 24px rgba(22,25,29,.07);
+  --radius:12px;
+  --maxw:1120px;
+  --font:"Zen Kaku Gothic New","Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417;
+    --surface:#1b1e23;
+    --surface-2:#252930;
+    --ink:#eceef1;
+    --ink-2:#a9b1bb;
+    --line:#333941;
+    --accent:#f08a4b;
+    --accent-ink:#1a0d05;
+    --accent-soft:#3a2418;
+    --ok:#7fd3a2;
+    --ok-soft:#1c3327;
+    --warn:#f0c46a;
+    --warn-soft:#3a2f17;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417;--surface:#1b1e23;--surface-2:#252930;--ink:#eceef1;--ink-2:#a9b1bb;--line:#333941;
+  --accent:#f08a4b;--accent-ink:#1a0d05;--accent-soft:#3a2418;--ok:#7fd3a2;--ok-soft:#1c3327;--warn:#f0c46a;--warn-soft:#3a2f17;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.35);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.8;font-feature-settings:"palt" 1;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+.num{font-variant-numeric:tabular-nums}
+.nb{display:inline-block}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* header */
+.hd{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--line)}
+.hd .wrap{display:flex;align-items:center;justify-content:space-between;height:60px;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:900;font-size:15px;white-space:nowrap;text-decoration:none;letter-spacing:.02em}
+.brand svg{flex:none}
+.brand small{font-weight:700;font-size:11px;color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;border:0;background:var(--accent);color:var(--accent-ink);font:inherit;font-weight:700;font-size:16px;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .15s ease,filter .15s ease}
+.btn:hover{filter:brightness(1.06)}
+.btn:active{transform:translateY(1px) scale(.99)}
+.btn.sm{min-height:44px;padding:0 16px;font-size:14px}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+
+/* hero */
+.hero{padding:40px 0 48px}
+.hero .grid{display:grid;gap:32px}
+.hero h1{font-size:clamp(28px,7.4vw,48px);line-height:1.35;font-weight:900;margin:0 0 16px;letter-spacing:.01em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p.lead{font-size:16px;color:var(--ink-2);margin:0 0 24px;max-width:34em}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.hero .seat{font-size:14px;color:var(--ink-2)}
+.hero .seat b{color:var(--ink)}
+
+/* SMS preview (live component) */
+.preview{position:relative;display:grid;gap:12px}
+.msg{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.msg .meta{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-2);margin-bottom:10px}
+.bubble{background:var(--surface-2);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:14px;line-height:1.7}
+.bubble a{color:var(--accent);word-break:break-all}
+.tag{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent)}
+.preview .cap{font-size:12px;color:var(--ink-2);text-align:right}
+
+/* sections */
+section{padding:56px 0}
+h2{font-size:clamp(23px,5.4vw,34px);line-height:1.45;font-weight:900;margin:0 0 16px}
+.sub{color:var(--ink-2);margin:0 0 28px;max-width:38em}
+
+/* money band */
+.money{background:var(--surface);border-block:1px solid var(--line)}
+.calc{display:grid;gap:16px;align-items:stretch}
+.calc .cell{border-radius:var(--radius);padding:20px}
+.calc .a{background:var(--accent-soft)}
+.calc .b{background:var(--surface-2)}
+.calc .k{font-size:14px;color:var(--ink-2);margin:0}
+.calc .v{font-size:clamp(28px,7vw,40px);font-weight:900;line-height:1.3;margin:4px 0 0}
+.calc .a .v{color:var(--accent)}
+.calc .vs{display:flex;align-items:center;justify-content:center;font-weight:900;color:var(--ink-2);font-size:14px}
+.money .note{font-size:14px;color:var(--ink-2);margin:20px 0 0}
+
+/* timeline */
+.flow{list-style:none;margin:0;padding:0;position:relative;display:grid;gap:0}
+.flow li{position:relative;padding:0 0 28px 56px}
+.flow li:last-child{padding-bottom:0}
+.flow li::before{content:"";position:absolute;left:19px;top:40px;bottom:0;width:2px;background:var(--line)}
+.flow li:last-child::before{display:none}
+.flow .dot{position:absolute;left:0;top:0;width:40px;height:40px;border-radius:50%;background:var(--surface);border:2px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:900}
+.flow h3{font-size:18px;margin:4px 0 4px;line-height:1.5}
+.flow p{margin:0;color:var(--ink-2);font-size:15px}
+
+/* dashboard preview */
+.board{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.board .bh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+.board .bh span{font-weight:400;color:var(--ink-2);font-size:12px}
+.board table{width:100%;border-collapse:collapse;font-size:14px}
+.board th,.board td{text-align:left;padding:10px 16px}
+.board th{font-size:12px;color:var(--ink-2);font-weight:700;background:var(--surface-2)}
+.board tr+tr td{border-top:1px solid var(--line)}
+.st{display:inline-block;font-size:12px;font-weight:700;padding:2px 10px;border-radius:999px;white-space:nowrap}
+.st.ok{background:var(--ok-soft);color:var(--ok)}
+.st.wait{background:var(--warn-soft);color:var(--warn)}
+.st.plan{background:var(--surface-2);color:var(--ink-2)}
+.board .cap{font-size:12px;color:var(--ink-2);padding:8px 16px 12px;margin:0}
+
+/* worries */
+.qa{display:grid;gap:0;border-top:1px solid var(--line)}
+.qa .row{display:grid;gap:6px;padding:20px 0;border-bottom:1px solid var(--line)}
+.qa .q{font-weight:700;font-size:17px;margin:0}
+.qa .a{margin:0;color:var(--ink-2)}
+
+/* beta */
+.beta{background:var(--surface);border-block:1px solid var(--line)}
+.terms{display:grid;gap:12px;margin:0 0 24px;padding:0;list-style:none}
+.terms li{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:var(--radius);background:var(--surface-2)}
+.terms li svg{flex:none;margin-top:4px;color:var(--accent)}
+.terms b{display:block}
+.terms span{font-size:14px;color:var(--ink-2)}
+.price{border:1.5px dashed var(--line);border-radius:var(--radius);padding:16px 18px;font-size:14px;color:var(--ink-2)}
+.price b{color:var(--ink)}
+
+/* form */
+.formcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 20px}
+.field{display:grid;gap:6px;margin-bottom:20px}
+.field label,.field legend{font-weight:700;font-size:15px;padding:0}
+.req{font-size:12px;font-weight:700;color:var(--accent);margin-left:6px}
+.opt{font-size:12px;font-weight:400;color:var(--ink-2);margin-left:6px}
+.help{font-size:13px;color:var(--ink-2)}
+input[type=text],input[type=email],input[type=tel],select,textarea{width:100%;min-height:48px;padding:10px 14px;font:inherit;font-size:16px;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:8px}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px var(--accent-soft)}
+fieldset{border:0;margin:0 0 20px;padding:0;min-width:0}
+.choices{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.choice span{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1.5px solid var(--line);border-radius:999px;font-size:15px;background:var(--bg)}
+.choice input:checked+span{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:700}
+.choice input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.err{font-size:13px;color:var(--accent);min-height:0}
+.agree{font-size:13px;color:var(--ink-2);margin:0 0 16px}
+.formcard .btn{width:100%}
+.hp{position:absolute;left:-9999px}
+.state{display:none}
+.state.on{display:block}
+.state h3{font-size:20px;margin:0 0 8px}
+.state p{color:var(--ink-2);margin:0 0 16px}
+.fallback textarea{font-size:14px;min-height:220px;background:var(--surface-2)}
+.fallback .acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.fallback .acts .btn{width:auto}
+.copied{font-size:13px;color:var(--ok);margin-left:4px}
+
+/* faq */
+details{border-bottom:1px solid var(--line)}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{list-style:none;cursor:pointer;padding:18px 36px 18px 0;font-weight:700;position:relative;min-height:44px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"";position:absolute;right:6px;top:50%;width:10px;height:10px;border-right:2px solid var(--ink-2);border-bottom:2px solid var(--ink-2);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+details[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+details p{margin:0 0 18px;color:var(--ink-2)}
+
+/* footer */
+.ft{padding:40px 0 120px;font-size:14px;color:var(--ink-2)}
+.ft dl{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;margin:0 0 16px}
+.ft dt{font-weight:700;color:var(--ink)}
+.ft dd{margin:0}
+
+/* mobile sticky cta */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line);transition:transform .25s ease}
+.dock .btn{width:100%}
+.dock.hide{transform:translateY(110%)}
+.hdcta{display:none}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .5s ease}
+.rv.in{opacity:1;transform:none}
+
+@media (min-width:768px){
+  .wrap{padding:0 32px}
+  .hero{padding:64px 0 72px}
+  .hero .grid{grid-template-columns:1.1fr .9fr;align-items:center;gap:48px}
+  section{padding:80px 0}
+  .calc{grid-template-columns:1fr auto 1fr}
+  .how .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+  .qa .row{grid-template-columns:minmax(220px,.8fr) 1.2fr;gap:32px}
+  .beta .grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  .terms{grid-template-columns:1fr}
+  .formcard{padding:32px}
+  .dock{display:none}
+  .hdcta{display:inline-flex}
+  .ft{padding-bottom:48px}
+}
+@media (min-width:768px) and (max-width:1023px){
+  .hero h1{font-size:34px}
+}
+@media (min-width:1024px){
+  .apply .grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:48px;align-items:start}
+}
+@media (min-width:1100px){
+  .hero h1{font-size:50px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .btn,.dock,summary::after{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="車検案内の自動送信 トップへ">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="7" fill="var(--accent)"/><path d="M8 15.5l4 4 8-10" fill="none" stroke="var(--accent-ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>車検案内の自動送信</span><small>β</small>
+    </a>
+    <a class="btn sm hdcta" href="#apply">モニターに応募</a>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <div class="hero">
+    <div class="wrap grid">
+      <div>
+        <h1><span class="nb">車検の案内漏れで、</span><br><span class="nb">お客様を<em>他店に</em></span><span class="nb"><em>渡さない。</em></span></h1>
+        <p class="lead">車検満了の2ヶ月前と1ヶ月前に、お客様のスマホへSMSで案内が自動で届きます。台帳から探す手間も、はがきの宛名書きもなくなります。</p>
+        <div class="ctas">
+          <a class="btn" href="#apply">モニターに応募</a>
+          <span class="seat">先着<b class="num">10</b>工場・<b>3ヶ月無料</b></span>
+        </div>
+      </div>
+
+      <div class="preview rv" aria-label="お客様に届くSMSの例">
+        <div class="msg">
+          <div class="meta"><span>SMS</span><span class="num">10月18日 9:00</span></div>
+          <div class="bubble">さくら自動車整備です。鈴木様のプリウスは<b class="num">12月18日</b>に車検満了を迎えます。ご予約はこちらから24時間受け付けています。<br><a href="#how" tabindex="-1">https://example.jp/r/8kq2</a><br>お電話でも承ります。029-000-0000</div>
+        </div>
+        <div><span class="tag">満了の2ヶ月前に自動送信</span></div>
+        <p class="cap">送信イメージ（工場名・文面は自由に変更できます）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONEY -->
+  <section class="money" aria-labelledby="money-h">
+    <div class="wrap">
+      <h2 id="money-h" class="rv">1台戻れば、月額の元が取れます。</h2>
+      <p class="sub rv">案内が届かなかったお客様は、ディーラーや車検チェーンのDMに流れがちです。このサービスは手間を減らすためより、売上を守るための仕組みです。</p>
+      <div class="calc rv">
+        <div class="cell a">
+          <p class="k">車検1台の売上</p>
+          <p class="v">数万円</p>
+        </div>
+        <div class="vs" aria-hidden="true">vs</div>
+        <div class="cell b">
+          <p class="k">正式版の月額（予定）</p>
+          <p class="v num">1,980円〜</p>
+        </div>
+      </div>
+      <p class="note">正式版はこれにSMSの送信料（1通10円前後の予定）がかかります。βモニター期間中は、SMS代も含めて無料です。</p>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="how" id="how" aria-labelledby="how-h">
+    <div class="wrap">
+      <h2 id="how-h" class="rv">使い方は、最初に登録するだけ。</h2>
+      <p class="sub rv">あとは毎月、案内が自動で出ていきます。</p>
+      <div class="grid">
+        <ol class="flow rv">
+          <li><span class="dot num">1</span><h3>お客様と車検満了日を登録</h3><p>今お使いのExcelやCSVをそのまま取り込めます。紙の台帳の場合も、β期間中は登録を代行します。</p></li>
+          <li><span class="dot num">2</span><h3>2ヶ月前と1ヶ月前に自動で案内</h3><p>お客様の携帯番号あてにSMSで送ります。メールアドレスが分かるお客様にはメールでも送れます。</p></li>
+          <li><span class="dot num">3</span><h3>予約状況を一覧で確認</h3><p>案内には予約フォームのリンクが付きます。誰が予約済みで、誰がまだかがひと目で分かるので、電話するべき相手だけに絞れます。</p></li>
+        </ol>
+
+        <div class="board rv" role="group" aria-label="予約状況一覧の例">
+          <div class="bh">12月満了のお客様<span class="num">全14台</span></div>
+          <table>
+            <thead><tr><th scope="col">お客様</th><th scope="col">満了日</th><th scope="col">状況</th></tr></thead>
+            <tbody>
+              <tr><td>鈴木様 プリウス</td><td class="num">12/18</td><td><span class="st ok">予約済み</span></td></tr>
+              <tr><td>高野様 N-BOX</td><td class="num">12/03</td><td><span class="st wait">未予約</span></td></tr>
+              <tr><td>石川様 ハイエース</td><td class="num">12/22</td><td><span class="st ok">予約済み</span></td></tr>
+              <tr><td>飯田様 タント</td><td class="num">12/27</td><td><span class="st plan">送信予定</span></td></tr>
+            </tbody>
+          </table>
+          <p class="cap">管理画面のイメージ（表示内容は開発中のものです）</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORRIES -->
+  <section aria-labelledby="worry-h">
+    <div class="wrap">
+      <h2 id="worry-h" class="rv">よくある心配ごと</h2>
+      <div class="qa rv">
+        <div class="row"><p class="q">お客様のメールアドレスが分からない</p><p class="a">SMSを前提にしているので、携帯番号だけで送れます。整備のときにいただいている電話番号がそのまま使えます。</p></div>
+        <div class="row"><p class="q">台帳の入力に時間をかけられない</p><p class="a">ExcelやCSVの取り込みに対応しています。β期間中は、台帳をお預かりして登録まで当方で行います。</p></div>
+        <div class="row"><p class="q">パソコンが得意ではない</p><p class="a">普段の操作は、届いた予約を一覧で見るだけです。スマホからも確認できます。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BETA -->
+  <section class="beta" id="beta" aria-labelledby="beta-h">
+    <div class="wrap grid">
+      <div>
+        <h2 id="beta-h" class="rv">βモニターの条件</h2>
+        <p class="sub rv">正式版の前に、実際の工場で使っていただける方を募集しています。</p>
+        <div class="price rv">正式版の料金（予定）<br><b class="num">月額1,980円〜</b> ＋ SMS送信料 <b class="num">1通10円前後</b></div>
+      </div>
+      <ul class="terms rv">
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg><div><b>先着10工場</b><span>個人経営の整備工場さまが対象です。</span></div></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg><div><b>3ヶ月間 無料</b><span>SMSの送信料も当方で負担します。</span></div></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg><div><b>顧客の登録は代行します</b><span>Excel・CSV・紙の台帳、どれでも大丈夫です。</span></div></li>
+        <li><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2l-3.5-3.5L4 14.2l5 5 11-11-1.5-1.5z"/></svg><div><b>面談はありません</b><span>使い心地は、メールやSNSのメッセージで伺います。</span></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- APPLY -->
+  <section class="apply" id="apply" aria-labelledby="apply-h">
+    <div class="wrap grid">
+      <div>
+        <h2 id="apply-h">モニターに応募する</h2>
+        <p class="sub">1分ほどで入力できます。内容を確認のうえ、2営業日以内にメールでご連絡します。</p>
+      </div>
+
+      <div class="formcard">
+        <form id="f" novalidate>
+          <input type="text" name="_honey" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <div class="field">
+            <label for="shop">工場名<span class="req">必須</span></label>
+            <input id="shop" name="工場名" type="text" autocomplete="organization" required>
+            <p class="err" id="shop-e" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="nm">ご担当者のお名前<span class="req">必須</span></label>
+            <input id="nm" name="お名前" type="text" autocomplete="name" required>
+            <p class="err" id="nm-e" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="em">メールアドレス<span class="req">必須</span></label>
+            <input id="em" name="メールアドレス" type="email" autocomplete="email" inputmode="email" required>
+            <p class="err" id="em-e" aria-live="polite"></p>
+          </div>
+          <div class="field">
+            <label for="tel">電話番号<span class="opt">任意</span></label>
+            <input id="tel" name="電話番号" type="tel" autocomplete="tel" inputmode="tel">
+          </div>
+          <div class="field">
+            <label for="area">所在地（市区町村まで）<span class="opt">任意</span></label>
+            <input id="area" name="所在地" type="text" autocomplete="address-level2">
+          </div>
+          <div class="field">
+            <label for="cars">管理しているお客様の台数（目安）<span class="opt">任意</span></label>
+            <select id="cars" name="顧客台数">
+              <option value="">選択してください</option>
+              <option>100台未満</option>
+              <option>100〜300台</option>
+              <option>300〜500台</option>
+              <option>500台以上</option>
+              <option>わからない</option>
+            </select>
+          </div>
+          <fieldset>
+            <legend>顧客台帳の形式<span class="opt">任意・複数可</span></legend>
+            <div class="choices">
+              <label class="choice"><input type="checkbox" name="台帳" value="紙"><span>紙</span></label>
+              <label class="choice"><input type="checkbox" name="台帳" value="Excel"><span>Excel</span></label>
+              <label class="choice"><input type="checkbox" name="台帳" value="整備管理ソフト"><span>整備管理ソフト</span></label>
+              <label class="choice"><input type="checkbox" name="台帳" value="その他"><span>その他</span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>今の車検案内の方法<span class="opt">任意・複数可</span></legend>
+            <div class="choices">
+              <label class="choice"><input type="checkbox" name="案内方法" value="はがき"><span>はがき</span></label>
+              <label class="choice"><input type="checkbox" name="案内方法" value="電話"><span>電話</span></label>
+              <label class="choice"><input type="checkbox" name="案内方法" value="LINE"><span>LINE</span></label>
+              <label class="choice"><input type="checkbox" name="案内方法" value="特にしていない"><span>特にしていない</span></label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="msg">ご質問・ご要望<span class="opt">任意</span></label>
+            <textarea id="msg" name="ご質問"></textarea>
+          </div>
+          <p class="agree">ご入力いただいた情報は、βモニターのご連絡にのみ使用します。</p>
+          <button class="btn" type="submit" id="sb">この内容で応募する</button>
+          <p class="err" id="form-e" aria-live="polite"></p>
+        </form>
+
+        <div class="state" id="ok" role="status" tabindex="-1">
+          <h3>応募を受け付けました</h3>
+          <p>ありがとうございます。2営業日以内に、ご入力のメールアドレスへご連絡します。</p>
+        </div>
+
+        <div class="state fallback" id="fb" tabindex="-1">
+          <h3>送信できませんでした</h3>
+          <p>お手数ですが、下の内容をコピーして <b>yuuki.oda.work@gmail.com</b> までメールでお送りください。</p>
+          <label class="sr" for="fbt">応募内容</label>
+          <textarea id="fbt" readonly></textarea>
+          <div class="acts">
+            <button class="btn sm" type="button" id="cp">内容をコピー</button>
+            <a class="btn sm ghost" id="ml" href="mailto:yuuki.oda.work@gmail.com">メールを開く</a>
+            <span class="copied" id="cpd" aria-live="polite"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section aria-labelledby="faq-h">
+    <div class="wrap" style="max-width:820px">
+      <h2 id="faq-h">質問</h2>
+      <details><summary>3ヶ月のβ期間が終わったら、自動で料金がかかりますか？</summary><p>かかりません。期間の終わりが近づいたらご連絡し、正式版を続けるかどうかをお選びいただきます。</p></details>
+      <details><summary>どんな工場が対象ですか？</summary><p>社長さまがご判断できる規模の、個人経営の整備工場さまを想定しています。地域は問いません。</p></details>
+      <details><summary>案内の文面は変えられますか？</summary><p>はい。工場名、電話番号、文面は自由に変更できます。お客様ごとに名前と車種、満了日が自動で入ります。</p></details>
+      <details><summary>誰が運営していますか？</summary><p>茨城県つくば市のWebエンジニア、小田裕貴が個人で開発・運営しています。</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <dl>
+      <dt>運営者</dt><dd>小田裕貴（個人開発）</dd>
+      <dt>連絡先</dt><dd><a href="mailto:yuuki.oda.work@gmail.com">yuuki.oda.work@gmail.com</a></dd>
+    </dl>
+    <p>サービス名は仮称です。</p>
+  </div>
+</footer>
+
+<div class="dock hide" id="dock"><a class="btn" href="#apply">モニターに応募</a></div>
+
+<script>
+(function(){
+  var ENDPOINT="https://formsubmit.co/ajax/yuuki.oda.work@gmail.com";
+  var f=document.getElementById("f"),sb=document.getElementById("sb");
+  var ok=document.getElementById("ok"),fb=document.getElementById("fb"),fbt=document.getElementById("fbt");
+
+  // reveal
+  var rv=document.querySelectorAll(".rv");
+  if("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target);}});},{rootMargin:"0px 0px -8% 0px"});
+    rv.forEach(function(el){io.observe(el);});
+  }else{rv.forEach(function(el){el.classList.add("in");});}
+
+  // hide dock near form
+  var dock=document.getElementById("dock"),ap=document.getElementById("apply");
+  var heroCta=document.querySelector(".hero .btn"),inHero=true,inForm=false;
+  function upd(){dock.classList.toggle("hide",inHero||inForm);}
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(es){inForm=es[0].isIntersecting;upd();},{threshold:0}).observe(ap);
+    new IntersectionObserver(function(es){inHero=es[0].isIntersecting;upd();},{threshold:0}).observe(heroCta);
+  }else{dock.classList.remove("hide");}
+
+  function val(id){return document.getElementById(id).value.trim();}
+  function setErr(id,msg){document.getElementById(id+"-e").textContent=msg;document.getElementById(id).setAttribute("aria-invalid",msg?"true":"false");}
+  function collect(){
+    var d={},fd=new FormData(f);
+    fd.forEach(function(v,k){if(k==="_honey")return; v=String(v).trim(); if(!v)return; d[k]=d[k]?d[k]+"、"+v:v;});
+    return d;
+  }
+  function toText(d){var s="件名：βモニター応募（車検案内の自動送信）\n\n";for(var k in d){s+=k+"："+d[k]+"\n";}return s;}
+  function show(el){f.style.display="none";el.classList.add("on");el.focus();}
+
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    var bad=false;
+    setErr("shop",val("shop")?"":"工場名を入力してください");
+    setErr("nm",val("nm")?"":"お名前を入力してください");
+    var em=val("em");
+    setErr("em",!em?"メールアドレスを入力してください":(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)?"":"メールアドレスの形式をご確認ください"));
+    ["shop","nm","em"].forEach(function(id){if(document.getElementById(id).getAttribute("aria-invalid")==="true"&&!bad){bad=true;document.getElementById(id).focus();}});
+    if(bad)return;
+    if(f._honey.value)return;
+
+    var d=collect();
+    var payload=Object.assign({},d,{_subject:"【βモニター応募】"+d["工場名"]+"（車検案内）",_template:"table",_captcha:"false"});
+    if(d["メールアドレス"])payload._replyto=d["メールアドレス"];
+    sb.disabled=true;sb.textContent="送信しています…";
+
+    var ctrl=("AbortController" in window)?new AbortController():null;
+    var timer=setTimeout(function(){if(ctrl)ctrl.abort();},15000);
+    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload),signal:ctrl?ctrl.signal:undefined})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+      .then(function(res){
+        clearTimeout(timer);
+        if(res.ok && (res.j.success===true||res.j.success==="true")){show(ok);}
+        else{throw new Error("ng");}
+      })
+      .catch(function(){
+        clearTimeout(timer);
+        var t=toText(d);fbt.value=t;
+        document.getElementById("ml").href="mailto:yuuki.oda.work@gmail.com?subject="+encodeURIComponent("βモニター応募（車検案内の自動送信）")+"&body="+encodeURIComponent(t);
+        show(fb);
+      });
+  });
+
+  document.getElementById("cp").addEventListener("click",function(){
+    var done=function(){document.getElementById("cpd").textContent="コピーしました";};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(fbt.value).then(done,function(){fbt.select();document.execCommand("copy");done();});}
+    else{fbt.select();document.execCommand("copy");done();}
+  });
+})();
+</script>
+</body>
+</html>
